@@ -1,9 +1,41 @@
+import org.jetbrains.gradle.ext.ActionDelegationConfig
+import org.jetbrains.gradle.ext.delegateActions
+import org.jetbrains.gradle.ext.encodings
+import org.jetbrains.gradle.ext.settings
+
 /*
  * Main build file for the XVM project, producing the XDK.
  */
 
+plugins {
+    id("idea")
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7" apply true
+}
+
 group   = "org.xvm"
 version = "0.4.3"
+
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+    project {
+        settings {
+            settings.generateImlFiles
+            delegateActions {
+                // Always delegate "Build and Run" and "Test" actions from Gradle to IntelliJ always.
+                delegateBuildRunToGradle = false
+                testRunner = ActionDelegationConfig.TestRunner.PLATFORM
+            }
+            encodings {
+                encoding = "UTF-8"
+            }
+        }
+    }
+    workspace {
+
+    }
+}
 
 allprojects {
     configurations.all {
@@ -59,15 +91,15 @@ tasks.register<Exec>("gitClean") {
 
     val prop = (project.findProperty("gitCleanDryRun") ?: "true").toString()
 
-    println("Running gitClean task...")
+    logger.lifecycle("Running gitClean task...")
     val flags = if ("true".equals(prop, ignoreCase = true)) flagsDryRun else flagsRealRun
     if (flags == flagsDryRun) {
-      println("  This is a dry run. To delete files for real, explicitly pass the property 'gitCleanDryRun=false'.")
+      logger.lifecycle("This is a dry run. To delete files for real, explicitly pass the property 'gitCleanDryRun=false'.")
     } else {
-      println("  This is NOT a dry run. Delete actions will be performed.")
+      logger.warn("WARNING: This is NOT a dry run. Delete actions will be performed.")
     }
-    println("  Executing: 'git clean $flags -e .idea'")
-    System.out.flush()
+    logger.lifecycle("  Executing: 'git clean $flags -e .idea'")
     commandLine("git", "clean", flags, "-e", ".idea")
-    println("Done.")
+    logger.lifecycle("Done.")
+    System.out.flush()
 }

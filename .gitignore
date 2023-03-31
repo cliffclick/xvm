@@ -28,6 +28,11 @@
 *.iws
 *.swp
 
+# All IntelliJ interaction should be done through the IDEA, which will import and set project information
+# correctly, if the Gradle build file has the idea and idea-ext plugins configured correctly. Hence,
+# we should ignore any *.iml files produced as well.
+*.iml
+
 # Logs and databases #
 ######################
 *.log
