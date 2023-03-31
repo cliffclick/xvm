@@ -47,6 +47,11 @@
 ehthumbs.db
 Thumbs.db
 
+# Editor scratch and autosave files #
+#####################################
+*~
+\#*#
+
 # build directory #
 ###################
 classes/
