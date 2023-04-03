@@ -1,9 +1,9 @@
 module HelloWorld
     {
-    @Inject Console console;
-
     void run()
         {
+        @Inject Console console;
+        assert:debug;
         console.print("Hello, world!");
         }
     }

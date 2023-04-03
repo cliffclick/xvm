@@ -1,29 +1,42 @@
-import org.jetbrains.gradle.ext.ActionDelegationConfig
-import org.jetbrains.gradle.ext.delegateActions
-import org.jetbrains.gradle.ext.encodings
-import org.jetbrains.gradle.ext.settings
+import org.jetbrains.gradle.ext.*
 
 /*
  * Main build file for the XVM project, producing the XDK.
  */
 
 plugins {
-    id("idea")
+    //id("idea")
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7" apply true
 }
 
-group   = "org.xvm"
+group = "org.xvm"
 version = "0.4.3"
 
 idea {
     module {
         inheritOutputDirs = true
+        println(pathVariables);
     }
     project {
         settings {
-            settings.generateImlFiles
+            compiler {
+                processHeapSize = 1024 // Gradle daemon max heap size, default is 700
+                autoShowFirstErrorInEditor = true
+                parallelCompilation = true
+                rebuildModuleOnDependencyChange = true
+                javac {
+                    javacAdditionalOptions = "-encoding UTF-8 -deprecation -Xlint:all --enable-preview "
+                }
+            }
+            runConfigurations {
+                // TODO: Run build task java_tools before, or at least be a dependency
+                "HelloWorld"(org.jetbrains.gradle.ext.Application) {
+
+                }
+            }
+            //settings.generateImlFiles
             delegateActions {
-                // Always delegate "Build and Run" and "Test" actions from Gradle to IntelliJ always.
+                // Always delegate "Build and Run" and "Test" actions from Gradle to IntelliJ.
                 delegateBuildRunToGradle = false
                 testRunner = ActionDelegationConfig.TestRunner.PLATFORM
             }
@@ -40,9 +53,9 @@ idea {
 allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
-            substitute(module("org.xtclang.xvm:javatools_utils"  )).using(project(":javatools_utils"))
+            substitute(module("org.xtclang.xvm:javatools_utils")).using(project(":javatools_utils"))
             substitute(module("org.xtclang.xvm:javatools_unicode")).using(project(":javatools_unicode"))
-            substitute(module("org.xtclang.xvm:javatools"        )).using(project(":javatools"))
+            substitute(module("org.xtclang.xvm:javatools")).using(project(":javatools"))
         }
     }
 
@@ -60,7 +73,7 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.register("build") {
-    group       = "Build"
+    group = "Build"
     description = "Build all projects"
 
     dependsOn(project("xdk:").tasks["build"])
@@ -94,9 +107,9 @@ tasks.register<Exec>("gitClean") {
     logger.lifecycle("Running gitClean task...")
     val flags = if ("true".equals(prop, ignoreCase = true)) flagsDryRun else flagsRealRun
     if (flags == flagsDryRun) {
-      logger.lifecycle("This is a dry run. To delete files for real, explicitly pass the property 'gitCleanDryRun=false'.")
+        logger.lifecycle("This is a dry run. To delete files for real, explicitly pass the property 'gitCleanDryRun=false'.")
     } else {
-      logger.warn("WARNING: This is NOT a dry run. Delete actions will be performed.")
+        logger.warn("WARNING: This is NOT a dry run. Delete actions will be performed.")
     }
     logger.lifecycle("  Executing: 'git clean $flags -e .idea'")
     commandLine("git", "clean", flags, "-e", ".idea")
