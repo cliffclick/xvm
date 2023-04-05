@@ -1,0 +1,23 @@
+// TODO: This file does not seem to auto resolve correctly if it's named build.gradle.kts and in Kotlin form
+//   (This is likely an unfixed issue in Gradle 8.0.2)
+
+plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.8.20"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(gradleApi())
+}
+
+/*
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "1.8"
+    }
+}
+*/

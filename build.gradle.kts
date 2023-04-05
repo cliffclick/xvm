@@ -5,13 +5,20 @@ import org.jetbrains.gradle.ext.*
  */
 
 plugins {
-    //id("java") apply true
-    id("idea")
+    id("java")
+    //id("idea")
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7" apply true
 }
 
 group = "org.xvm"
 version = "0.4.3"
+
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
 
 defaultTasks("clean", "build")
 
@@ -28,7 +35,7 @@ idea {
                 parallelCompilation = true
                 rebuildModuleOnDependencyChange = true
                 javac {
-                    javacAdditionalOptions = "-encoding UTF-8 -deprecation -Xlint:all --enable-preview "
+                    javacAdditionalOptions = "-encoding UTF-8 -deprecation -Xlint:all --enable-preview"
                 }
             }
             /*            runConfigurations {
@@ -75,17 +82,10 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-
-println(allprojects)
-println(subprojects)
-println(gradle.includedBuilds)
-println("****")
-//println(project("xdk:").tasks["build"])
-println("****")
-
 //tasks.forEach(println("Task " + t))
 //tasks["build"].dependsOn(project("xdk:").tasks["build"])
 
+/*
 tasks.register("build") {
     group = "Build"
     description = "Build all projects"
@@ -95,8 +95,9 @@ tasks.register("build") {
         dependsOn(deps)
     //}
 }
+*/
 
-project("xdk:")
+//project("xdk:")
 
 task("gitClean") {
     group = "other"

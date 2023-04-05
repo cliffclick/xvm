@@ -50,6 +50,7 @@ val xdkVersion      = rootProject.version
 var distName        = xdkVersion
 val isCI            = System.getenv("CI")
 val buildNum        = System.getenv("BUILD_NUMBER")
+
 if (isCI != null && isCI != "0" && isCI != "false" && buildNum != null) {
     distName = "${distName}ci${buildNum}"
 
@@ -271,6 +272,33 @@ val compileJsonDB = tasks.register<JavaExec>("compileJsonDB") {
     mainClass.set("org.xvm.tool.Compiler")
 }
 
+/*
+val xtcCompile = task("xtcCompile", JavaExec::class) {
+    group = "Execution"
+    dependsOn(javatools.tasks["build"])
+    jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
+    classpath(javatoolsJar)
+    args("-o", "$libDir", "-version", "$xdkVersion", "-L", "$coreLib", "-L", "$turtleLib", "-L", "$libDir", ")
+}
+*/
+
+val compileWeb = tasks.register<tasks.AbstractCompileXtc>("compileWeb") {
+//    mainClass.set("apa")
+//}
+}
+
+/*
+val compileWeb = tasks.register<CompileXtc>("compileWeb") {
+    assert("Execution".equals(group))
+    println(jvmArgs)
+    println(mainClass)
+    println(args)
+    description = "Build web.xtc module"
+    xtcFilePath = "$webMain/x/web.x"
+    dependsOn(javatools.tasks["build"])
+    shouldRunAfter(compileNet, compileJson)
+}*/
+/*
 val compileWeb = tasks.register<JavaExec>("compileWeb") {
     group       = "Execution"
     description = "Build web.xtc module"
@@ -289,7 +317,7 @@ val compileWeb = tasks.register<JavaExec>("compileWeb") {
          "-L", "$libDir",
          "$webMain/x/web.x")
     mainClass.set("org.xvm.tool.Compiler")
-}
+}*/
 
 val compileXenia = tasks.register<JavaExec>("compileXenia") {
     group       = "Execution"
