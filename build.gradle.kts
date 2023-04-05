@@ -1,4 +1,3 @@
-import org.apache.tools.ant.taskdefs.ExecTask
 import org.jetbrains.gradle.ext.*
 
 /*
@@ -6,7 +5,7 @@ import org.jetbrains.gradle.ext.*
  */
 
 plugins {
-    id("java")
+    //id("java") apply true
     id("idea")
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7" apply true
 }
@@ -14,10 +13,12 @@ plugins {
 group = "org.xvm"
 version = "0.4.3"
 
+defaultTasks("clean", "build")
+
 idea {
     module {
         inheritOutputDirs = true
-        println(pathVariables);
+        println(pathVariables)
     }
     project {
         settings {
@@ -30,12 +31,12 @@ idea {
                     javacAdditionalOptions = "-encoding UTF-8 -deprecation -Xlint:all --enable-preview "
                 }
             }
-/*            runConfigurations {
-                // TODO: Run build task java_tools before, or at least be a dependency
-                "HelloWorld"(org.jetbrains.gradle.ext.Application) {
+            /*            runConfigurations {
+                            // TODO: Run build task java_tools before, or at least be a dependency
+                            "HelloWorld"(org.jetbrains.gradle.ext.Application) {
 
-                }
-           }*/
+                            }
+                       }*/
             //settings.generateImlFiles
             delegateActions {
                 // Always delegate "Build and Run" and "Test" actions from Gradle to IntelliJ.
@@ -75,55 +76,40 @@ tasks.withType<JavaCompile> {
 }
 
 
-/*
+println(allprojects)
+println(subprojects)
+println(gradle.includedBuilds)
+println("****")
+//println(project("xdk:").tasks["build"])
+println("****")
+
+//tasks.forEach(println("Task " + t))
+//tasks["build"].dependsOn(project("xdk:").tasks["build"])
+
 tasks.register("build") {
     group = "Build"
     description = "Build all projects"
-
-    dependsOn(project("xdk:").tasks["build"])
-}*/
-
-/*
- * Generic helper tasks below, e.g. cleaning up all generated files not under source control
- *
- * Note that "gradle clean" flushes dependencies and things from caches and daemons, but does
- * not get rid of a physical build on disk like e.g.
-/* "make clean" typically does.
- */
-
- * gitClean:
- *
- * This is a task to clean up all files in the source tree that are not under source control,
- * with the exception of individual IDE configurations.
- *
- * This task is a dry run; it will only list what it would like to delete, and it's recommended
- * to run this first as a safety measure. To actually perform the deletions, use the task
- */
-ext {
-    val isDryRun = project.properties["gitCleanDryRun"] ?: "false"
+    //doLast {
+        val deps = project("xdk:").tasks["build"]
+        println("deps: " + deps)
+        dependsOn(deps)
+    //}
 }
 
-tasks.register<GitCleanTask>("gitClean") {
+project("xdk:")
+
+task("gitClean") {
     group = "other"
-    description = "Runs git clean, recursively from the repo root. The .idea directory is exempt. Use the -PgitCleanDryRun property to delete fiels for real."
+    description = "Runs git clean, recursively from the repo root. Default is dry run."
+
     doLast {
-        tasks.named("apa").
-        tasks.create<AbstractGitCleanTask>(true) {
-            val flagsDryRun = "-nfxd"
-            val flagsRealRun = "-fxd"
-            val prop = (project.findProperty("gitCleanDryRun") ?: "true").toString()
-            val flags = if ("true".equals(prop, ignoreCase = true)) flagsDryRun else flagsRealRun
-            if (flags == flagsDryRun) {
-                logger.lifecycle("This is a dry run. To delete files for real, explicitly pass the property 'gitCleanDryRun=false'.")
-            } else {
-                logger.warn("WARNING: This is NOT a dry run. Delete actions will be performed.")
-            }
+        exec {
+            val dryRun = !"false".equals((project.findProperty("gitCleanDryRun") ?: "true").toString(), ignoreCase = true)
             logger.lifecycle("Running gitClean task...")
-            logger.lifecycle("  Executing: 'git clean $flags -e .idea'")
-            executable("git")
-            commandLine("git", "clean", flags, "-e", ".idea")
-            logger.lifecycle("Done.")
-            System.out.flush()
-        }.execute();
-    }*/
+            if (dryRun) {
+                logger.warn("WARNING: gitClean is in dry run mode. To explicitly run gitClean, use '-PgitCleanDryRun=false'.")
+            }
+            commandLine("git", "clean", if (dryRun) "-nfxd" else "-fxd", "-e", ".idea")
+        }
+    }
 }
