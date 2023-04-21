@@ -11,12 +11,10 @@ plugins {
 }
 
 dependencies {
-    implementation("com.sun.activation:javax.activation:1.2.0")
-    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.2")
-    implementation("org.glassfish.jaxb:jaxb-runtime:2.3.2")
+    implementation(libs.bundles.unicode)
     implementation("org.xtclang.xvm:javatools_utils:")
 }
 
 application {
-    getMainClass().set("org.xvm.tool.BuildUnicodeTables")
+    mainClass.set("org.xvm.tool.BuildUnicodeTables")
 }

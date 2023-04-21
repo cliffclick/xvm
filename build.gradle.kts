@@ -1,11 +1,13 @@
+import org.gradle.jvm.toolchain.internal.DefaultJavaToolchainUsageProgressDetails.JavaTool
+
 /*
  * Main build file for the XVM project, producing the XDK.
  */
 
 group   = "org.xvm"
-version = "0.4.3"
+version = libs.versions.xvm.get()
 
-allprojects {
+subprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute(module("org.xtclang.xvm:javatools_utils"  )).using(project(":javatools_utils"))
@@ -21,10 +23,6 @@ allprojects {
             }
         }
     }
-}
-
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
 }
 
 tasks.register("build") {
