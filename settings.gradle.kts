@@ -24,31 +24,3 @@ include(":xdk")      // builds the above modules (ecstasy.xtc, javatools_bridge.
 // drags in Java libraries (javatools_utils, javatools), native launchers, wiki, etc.
 
 include(":manualTests") // temporary; allowing gradle test execution
-
-dependencyResolutionManagement {
-    versionCatalogs {
-        /**
-         * Root project version and subproject versions
-         */
-        create("libs") {
-            version("jdk", "17")
-            version("xvm", "0.4.3")
-            library("xvm-artifact", "org.xvm", "xvm").versionRef("xvm")
-
-            /**
-             * Junit tests.
-             * TODO: Upgrade to Jupiter/JUnit 5
-             */
-            version("junit", "4.12")
-            library("junit", "junit", "junit").versionRef("junit")
-
-            /**
-             * Dependencies needed for javatools_unicode, and generation
-             */
-            library("activation", "com.sun.activation:javax.activation:1.2.0")
-            library("bind-api", "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2")
-            library("jaxb", "org.glassfish.jaxb:jaxb-runtime:2.3.2")
-            bundle("unicode", listOf("activation", "bind-api", "jaxb"))
-        }
-    }
-}

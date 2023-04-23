@@ -1,0 +1,10 @@
+[versions]
+xvm = "0.4.3"
+jdk = 17
+junit = "4.12"
+
+[libraries]
+library = { module = "junit:junit", version.ref = "junit" }
+#library = { module = "", version.ref = "junit" }
+
+[bundles]

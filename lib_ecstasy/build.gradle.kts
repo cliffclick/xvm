@@ -9,10 +9,12 @@
 
 project.ext.set("implicit.x", "${projectDir}/src/main/resources/implicit.x")
 
+println("BuildDir for lib_ecstacy: ${project.buildDir}")
+
 tasks.register("clean") {
     group       = "Build"
     description = "Delete previous build results"
-    // the Ecstasy module project does not build anything itself, so there is nothing to clean
+    enabled = false // the Ecstasy module project does not build anything itself, so there is nothing to clean
 }
 
 tasks.register<Copy>("importUnicodeFiles") {
@@ -42,5 +44,6 @@ tasks.register("rebuildUnicodeFiles") {
 tasks.register("build") {
     group       = "Build"
     description = "Build this project"
+    enabled = false
     // the Ecstasy module project does not build anything itself
 }

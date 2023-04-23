@@ -3,6 +3,11 @@ import org.gradle.jvm.toolchain.internal.DefaultJavaToolchainUsageProgressDetail
 /*
  * Main build file for the XVM project, producing the XDK.
  */
+plugins {
+    id("xvm.java-conventions")
+}
+
+println("from main build script: ${libs.versions.xvm.get()}")
 
 group   = "org.xvm"
 version = libs.versions.xvm.get()
