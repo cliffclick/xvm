@@ -7,7 +7,7 @@
  */
 
 plugins {
-    application
+    id("org.xvm.java-application-conventions")
 }
 
 dependencies {

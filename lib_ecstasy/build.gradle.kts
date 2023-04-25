@@ -9,13 +9,15 @@
 
 project.ext.set("implicit.x", "${projectDir}/src/main/resources/implicit.x")
 
-println("BuildDir for lib_ecstacy: ${project.buildDir}")
+println("BuildDir for lib_ecstasy: ${project.buildDir}")
 
 tasks.register("clean") {
     group       = "Build"
     description = "Delete previous build results"
     enabled = false // the Ecstasy module project does not build anything itself, so there is nothing to clean
 }
+
+//println(project(":javatools_unicode").resources)
 
 tasks.register<Copy>("importUnicodeFiles") {
     group       = "Build"

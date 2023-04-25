@@ -3,7 +3,7 @@
  */
 
 plugins {
-    java
+    id("org.xvm.java-library-conventions")
 }
 
 tasks.withType(Jar::class) {
@@ -22,18 +22,6 @@ tasks.withType(Jar::class) {
     }
 }
 
-java {
-    // Java 17 is the latest "Long Term Support" (LTS) release, as of late 2021
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks.test {
-    useJUnit();
-    maxHeapSize = "1G"
-}
-
 dependencies {
-    // Use JUnit test framework
-    testImplementation("junit:junit:4.12")
+    testImplementation(libs.junit)
 }

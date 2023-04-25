@@ -1,3 +1,26 @@
+pluginManagement {
+    // Include 'plugins build' to define convention plugins. (incubating, but new best practice to avoid complete
+    // recompilations of the project when using buildSrc. While buildSrc is implicit as a separate build, we have
+    // to explicitly use "includeBuild" to pick up the build-logic folder.
+    includeBuild("build-logic")
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral {
+            content {
+                excludeGroup("org.xtclang.xvm")
+            }
+        }
+        gradlePluginPortal()
+    }
+}
+
+// TODO: If needed, add support for applying the foojay-resolver plugin to allow automatic download of JDKs
+//plugins {
+//    id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
+//}
+
 rootProject.name = "xvm"
 
 include(":javatools_utils")     // produces javatools_utils.jar for org.xvm.utils package
@@ -18,9 +41,6 @@ include(":lib_jsondb")          // produces jsondb.xtc
 include(":lib_web")             // produces web.xtc
 include(":lib_webauth")         // produces webauth.xtc
 include(":lib_xenia")           // produces xenia.xtc
-
-// TODO(":wiki")
-include(":xdk")      // builds the above modules (ecstasy.xtc, javatools_bridge.xtc, json.xtc, etc.)
-// drags in Java libraries (javatools_utils, javatools), native launchers, wiki, etc.
-
-include(":manualTests") // temporary; allowing gradle test execution
+include(":xdk")                 // builds the above modules (ecstasy.xtc, javatools_bridge.xtc, json.xtc, etc.)
+include(":manualTests")         // TODO temporary; allowing gradle test execution
+//include(":wiki")              // TODO: Implement the wiki generation task.

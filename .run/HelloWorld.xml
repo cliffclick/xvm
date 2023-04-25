@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Hello" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="MAIN_CLASS_NAME" value="org.xvm.runtime.TestConnector" />
+    <module name="xvm.javatools.test" />
+    <option name="PROGRAM_PARAMETERS" value="src/main/x/HelloWorld.x" />
+    <option name="VM_PARAMETERS" value="-ea -DNoDEBUG=1 -Dxvm.parallelism=1" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/manualTests" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="build" externalProjectPath="$PROJECT_DIR$/javatools" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>

@@ -1,5 +1,4 @@
-# Compiled source #
-###################
+# Compiled source
 *.com
 *.class
 *.dll
@@ -9,10 +8,10 @@
 *.dSYM
 *.xtc
 
-# Packages #
-############
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
+# Packages
+#
+# TODO: It's better to unpack these files and commit the raw source, as
+# git has its own built in compression methods)
 *.7z
 *.dmg
 *.gz
@@ -23,13 +22,9 @@
 *.zip
 
 # User specific tool settings
-#############################
-*.ipr
-*.iws
 *.swp
 
-# Logs and databases #
-######################
+# Logs and databases
 *.log
 *.out
 *.tmp
@@ -37,8 +32,9 @@
 *.sql
 *.sqlite
 
-# OS generated files #
-######################
+# OS generated files
+
+# Mac
 .DS_Store
 .DS_Store?
 ._*
@@ -47,14 +43,78 @@
 ehthumbs.db
 Thumbs.db
 
-# build directory #
-###################
+# Build directories (Gradle)
 classes/
 build/
 
-# tooling and project files #
-#############################
+# Tooling and project files
 prj/
 .idea/
 .gradle/
 !gradle-wrapper.jar
+
+# Inlined ignore logic for anything about IntelliJ and its various integration
+# with common build tools, for manipulating or synchronizing the configurations
+# in the ".idea" directory and other places.
+#
+# See: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+# See: https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# AWS User-specific
+.idea/**/aws.xml
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+#
+# TODO: Xtc should not use auto-import until we have configuration import working well
+#
+# .idea/artifacts
+# .idea/compiler.xml
+# .idea/jarRepositories.xml
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
+
+# CMake
+cmake-build-*/
+
+# File-based project format
+*.iml
+*.ipr
+*.iws
+
+# IntelliJ build directories
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# Editor-based Rest Client
+.idea/httpRequests

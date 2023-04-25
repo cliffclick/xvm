@@ -3,11 +3,24 @@
  */
 
 plugins {
-    java
+    id("org.xvm.java-library-conventions")
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs += file("$buildDir/resources/main")
+        }
+    }
+    test {
+        resources {
+            srcDirs += file("$buildDir/resources/main")
+        }
+    }
 }
 
 tasks.register<Copy>("copyImplicits") {
-    group       = "Build"
+    group = "Build"
     description = "Copy the implicit.x from :lib_ecstasy project into the build directory."
     from(file(project(":lib_ecstasy").property("implicit.x")!!))
     into(file("$buildDir/resources/main/"))
@@ -16,8 +29,10 @@ tasks.register<Copy>("copyImplicits") {
     }
 }
 
+// Replaces the whole copy Implicits task.
+
 tasks.register<Copy>("copyUtils") {
-    group       = "Build"
+    group = "Build"
     description = "Copy the classes from :javatools_utils project into the build directory."
     dependsOn(project(":javatools_utils").tasks["classes"])
     from(file("${project(":javatools_utils").buildDir}/classes/java/main"))
@@ -28,9 +43,14 @@ tasks.register<Copy>("copyUtils") {
     }
 }
 
+// TODO We just want to get the lib_xtc implicit.x in our resource folder
+
+
 tasks.jar {
+    //from(project(":javatools_utils").sourceSets["main"].output.classesDirs)
+    //from(project(":lib_ecstasy").sourceSets["main"].resources.srcDirs)
     val copyImplicits = tasks["copyImplicits"]
-    val copyUtils     = tasks["copyUtils"]
+    val copyUtils = tasks["copyUtils"]
 
     dependsOn(copyImplicits)
     dependsOn(copyUtils)
@@ -58,19 +78,9 @@ tasks.compileTestJava {
     dependsOn(tasks["copyUtils"])
 }
 
-tasks.test {
-    useJUnit();
-    maxHeapSize = "1G"
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
 dependencies {
     implementation("org.xtclang.xvm:javatools_utils:")
-
+//    implementation(project(":lib_ecstasy"))
     // Use JUnit test framework
-    testImplementation("junit:junit:4.12")
+    //testImplementation("junit:junit:4.12")
 }
