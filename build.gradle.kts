@@ -92,9 +92,22 @@ idea {
 
             // https://youtrack.jetbrains.com/issue/IDEA-286095/Gradle-IDEA-Ext-Unclear-how-to-generate-iml-files-for-project-not-yet-imported
             delegateActions {
-                delegateBuildRunToGradle = false
-                testRunner = ActionDelegationConfig.TestRunner.PLATFORM
-                println("Delegate build runs to gradle: $delegateBuildRunToGradle (testRunner: $testRunner)")
+                // Change to false for automatic IDEA integration, but there are issues automatically configuring our
+                // non-standard configuration for project module info and resource directories. This should normally
+                // be automatically picked up for a known language project, as long as it conforms to the declarative
+                // behavior of the Gradle standard lifecycle, which XTC currently doesn't do completely.
+                //
+                // It is a complex undertaking to support IntelliJ integration for the sample run configurations
+                // that works out of the box, as long as portions of are build are implemented with significant
+                // amounts of custom code, rather than sticking as close as possible to the declarative standard
+                // preferred by Gradle. In short: to play well with Gradle, any build logic should be as declarative
+                // as possible, meaning that you tell Gradle what you want done, but do not tell it how and/or in
+                // which order to do it, and striving to add as little explicit build logic / "code" as possible.
+                // An XTC language would be the best way to get there, both for the pure Gradle build, but also
+                // for any IDE integrations with e.g. debuggers, lexing and breakpoints.
+                delegateBuildRunToGradle = true
+                testRunner = ActionDelegationConfig.TestRunner.GRADLE // PLATFORM
+                println("Delegate build runs to Gradle: $delegateBuildRunToGradle (testRunner: $testRunner)")
             }
 
             compiler {
@@ -102,7 +115,7 @@ idea {
                 autoShowFirstErrorInEditor = true
                 parallelCompilation = true
                 javac {
-                    javacAdditionalOptions = "-encoding UTF-8 -deprecation" // TODO: -Xlint:all in pedantic mode
+                    javacAdditionalOptions = "-encoding UTF-8" // TODO: Add a pedantic mode with e.g. -Xlint:all too
                     generateDeprecationWarnings = true
                 }
                 encodings {

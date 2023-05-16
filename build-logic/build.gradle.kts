@@ -5,15 +5,22 @@
  */
 
 plugins {
-    `kotlin-dsl`  // Support convention plugins written in Kotlin. Convention plugins are build scripts in 'src/main' that automatically become available as plugins in the main build.
+    // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
+    `java-gradle-plugin`
+    // Support publishing an artefact for XVM, to local ore remote repos
+    `maven-publish`
+    // Support convention plugins written in Kotlin. They are scripts in 'src/main/kotlin' that automatically become available as plugins in the main build.    `kotlin-dsl`
     kotlin("jvm") version "1.8.10"
 }
 
-/*
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}*/
+gradlePlugin {
+    plugins {
+        val xtcLang by plugins.creating {
+            id = "xtc-lang-plugin"
+            implementationClass = "org.xvm.XtcLangPlugin"
+        }
+    }
+}
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
