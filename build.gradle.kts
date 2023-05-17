@@ -9,7 +9,7 @@ plugins {
     base
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
     id("com.dorongold.task-tree") version "2.1.1" // enables the 'gradle <task_1> [task_2 ... task_n] taskTree' task
-    id("org.xvm.myproject.conventions")
+    id("org.xvm.project.conventions")
 }
 
 group = "org.xvm"

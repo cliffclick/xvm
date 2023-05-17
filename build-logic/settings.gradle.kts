@@ -1,4 +1,4 @@
-//rootProject.name = "xvm-build-logic"
+rootProject.name = "build-logic"
 
 dependencyResolutionManagement {
     repositories {

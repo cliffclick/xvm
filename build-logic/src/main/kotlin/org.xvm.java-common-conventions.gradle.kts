@@ -26,8 +26,8 @@ fun versionCatalogLookupLibrary(name : String): Provider<MinimalExternalModuleDe
     return versionCatalogLibs().findLibrary(name).get()
 }
 
-fun versionCatalogLookupVersion(name : String): VersionConstraint {
-    return versionCatalogLibs().findVersion(name).get()
+fun versionCatalogLookupVersion(name : String): String {
+    return versionCatalogLibs().findVersion(name).get().toString()
 }
 
 val junit = versionCatalogLookupLibrary("junit")
@@ -43,8 +43,8 @@ val defaultJdkVersion = 17
 
 java {
     toolchain {
-        val ver = jdkVersion as? Int ?: defaultJdkVersion
-        println("jdkVersion: $ver")
+        val ver : String = jdkVersion
+        println("Java Toolchain will use jdkVersion: $ver")
         languageVersion.set(JavaLanguageVersion.of(ver))
     }
 }
