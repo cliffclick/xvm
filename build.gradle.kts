@@ -1,6 +1,6 @@
+import java.io.ByteArrayOutputStream
+
 import org.jetbrains.gradle.ext.*
-import org.gradle.api.XmlProvider
-import org.gradle.internal.impldep.org.apache.commons.io.output.ByteArrayOutputStream
 
 /*
  * Main build file for the XVM project, producing the XDK.
@@ -12,11 +12,17 @@ plugins {
     id("org.xvm.project.conventions")
 }
 
-group = "org.xvm"
-version = libs.versions.xvm.get()
+val getXvmVersion: () -> String by extra
 
-gradle.startParameter.showStacktrace = org.gradle.api.logging.configuration.ShowStacktrace.ALWAYS_FULL
-gradle.startParameter.logLevel = org.gradle.api.logging.LogLevel.DEBUG
+group = "org.xvm"
+version = getXvmVersion()
+
+// TODO REMOVE THESE
+if ("true".equals(System.getenv("DEBUG_BUILD"), ignoreCase = true)) {
+    gradle.startParameter.showStacktrace = org.gradle.api.logging.configuration.ShowStacktrace.ALWAYS_FULL
+    gradle.startParameter.logLevel = org.gradle.api.logging.LogLevel.DEBUG
+    println("Warning: DEBUG_BUILD is enabled, and output may be quite verbose.")
+}
 
 subprojects {
     configurations.all {
@@ -27,9 +33,6 @@ subprojects {
         }
     }
 }
-
-val doSomethingWithString: (String) -> String by extra
-println("GetCI: " + doSomethingWithString("foo"))
 
 // Base tasks: clean, check, assemble, build, buildCONFIGURATION, cleanTASK
 // The build task will be the default implementation, and since the settings.gradle.kts already
@@ -46,7 +49,7 @@ val gitCleanTask = tasks.register("cleanAll") {
     group = "Delete"
     description = "Cleans everything, including the Gradle cache, and items not under source control. Also runs 'gradle clean'"
     exec {
-        standardOutput = java.io.ByteArrayOutputStream()
+        standardOutput = ByteArrayOutputStream()
         workingDir = rootDir
         executable = "git"
         args("clean", "-nxfd", "-e", ".idea")
@@ -58,6 +61,16 @@ val gitCleanTask = tasks.register("cleanAll") {
         }
     }
     finalizedBy(tasks["clean"]) // should run Gradle clean AFTER gitClean, to ensure Gradle clean has no caches left.
+}
+
+/**
+ * Task that can be used to do a full rebuild of the entire project. Gradle clean
+ * keeps cached state and other things by design, but it is useful to be able to
+ * do a full rebuild, especially while we don't have full Gradle lifecycle support
+ * and IDE integration for XTC
+ */
+tasks.register("rebuild") {
+
 }
 
 /*

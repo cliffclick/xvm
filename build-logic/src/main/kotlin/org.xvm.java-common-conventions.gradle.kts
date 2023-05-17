@@ -1,6 +1,17 @@
+/**
+ * Conventions common for all projects that use Java, and their tests
+ */
 plugins {
     java
 }
+
+/**
+ * Default Java toolchain version to use if version catalog does not specify which Java we need
+ * (all versions of dependencies should be in rootDir/gradle/libs.versions.toml)
+ */
+
+val versionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+val defaultJdkVersion = 17
 
 repositories {
     mavenCentral()
@@ -11,6 +22,18 @@ dependencies {
         // Define dependency versions as constraints
         implementation("org.apache.commons:commons-text:1.10.0")
     }
+    versionCatalog.findLibrary("junit").ifPresent {
+        println("conventions:common-java:junit: $it")
+        testImplementation(it)
+    }
+}
+
+java {
+    toolchain {
+        val ver : String = getJdkVersion()
+        println("Java Toolchain will use jdkVersion: $ver")
+        languageVersion.set(JavaLanguageVersion.of(ver))
+    }
 }
 
 tasks.named<Test>("test") {
@@ -18,17 +41,17 @@ tasks.named<Test>("test") {
     maxHeapSize = "1G"
 }
 
-fun Project.versionCatalogLibs(): VersionCatalog {
-    return extensions.getByType<VersionCatalogsExtension>().named("libs")
+tasks.withType<JavaCompile>().configureEach {
+    options.encoding = "UTF-8"
 }
 
 fun versionCatalogLookupLibrary(name : String): Provider<MinimalExternalModuleDependency> {
-    return versionCatalogLibs().findLibrary(name).get()
+    return versionCatalog.findLibrary(name).get()
 }
 
 fun versionCatalogLookupVersion(name : String, defaultValue : Any? = null): String {
-    val version = versionCatalogLibs().findVersion(name)
-    if (version.isPresent) { // TODO: There has to be a pretty kotlin construct for this Java style Optional
+    val version = versionCatalog.findVersion(name)
+    if (version.isPresent) { // TODO: There has to be a pretty Kotlin construct for this Java style Optional
         return version.get().toString()
     }
     if (defaultValue == null) {
@@ -37,24 +60,12 @@ fun versionCatalogLookupVersion(name : String, defaultValue : Any? = null): Stri
     return defaultValue.toString()
 }
 
-val junit = versionCatalogLookupLibrary("junit")
-
-dependencies {
-    testImplementation(junit)
+fun resolveJdkVersion() : String {
+    return versionCatalogLookupVersion("jdk", defaultJdkVersion)
 }
 
-// TODO: Ugly hack, while plugin version catalog resolution for precompiled scripts is broken in Gradle
-val defaultJdkVersion = 17
-val jdkVersion = versionCatalogLookupVersion("jdk", defaultJdkVersion)
-
-java {
-    toolchain {
-        val ver : String = jdkVersion
-        println("Java Toolchain will use jdkVersion: $ver")
-        languageVersion.set(JavaLanguageVersion.of(ver))
+val getJdkVersion by extra {
+    fun() : String {
+        return resolveJdkVersion()
     }
-}
-
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "UTF-8"
 }

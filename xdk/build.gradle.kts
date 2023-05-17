@@ -4,6 +4,10 @@
 
 import java.nio.file.Paths
 
+plugins {
+    id("org.xvm.java-common-conventions")
+}
+
 val javatools     = project(":javatools")
 val launcher      = project(":javatools_launcher")
 val turtle        = project(":javatools_turtle")
@@ -49,6 +53,7 @@ val bridgeLib       = "$javaDir/javatools_bridge.xtc"
 val distDir         = "$buildDir/dist"
 
 val xdkVersion      = rootProject.version
+/*
 var distName        = xdkVersion
 val isCI            = System.getenv("CI")
 val buildNum        = System.getenv("BUILD_NUMBER")
@@ -66,6 +71,8 @@ if (isCI != null && isCI != "0" && isCI != "false" && buildNum != null) {
         distName = "${distName}+${changeId}"
     }
 }
+ */
+
 println("*** XDK distName=${distName}")
 
 tasks.register("clean") {
@@ -105,7 +112,7 @@ val compileEcstasy = tasks.register<JavaExec>("compileEcstasy") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
          "$ecstasyMain/x/ecstasy.x",
          "$turtleMain/x/mack.x")
@@ -113,7 +120,7 @@ val compileEcstasy = tasks.register<JavaExec>("compileEcstasy") {
 
     doLast {
         file("$libDir/mack.xtc").
-           renameTo(file("$turtleLib"))
+           renameTo(file(turtleLib))
         println("Finished task: compileEcstasy")
     }
 }
@@ -129,10 +136,10 @@ val compileAggregate = tasks.register<JavaExec>("compileAggregate") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
+         "-L", coreLib,
+         "-L", turtleLib,
          "$aggregateMain/x/aggregate.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -148,10 +155,10 @@ val compileCollections = tasks.register<JavaExec>("compileCollections") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
+         "-L", coreLib,
+         "-L", turtleLib,
          "$collectionsMain/x/collections.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -167,10 +174,10 @@ val compileCrypto = tasks.register<JavaExec>("compileCrypto") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
+         "-L", coreLib,
+         "-L", turtleLib,
          "$cryptoMain/x/crypto.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -186,11 +193,11 @@ val compileNet  = tasks.register<JavaExec>("compileNet") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
-         "-L", "$libDir",
+         "-L", coreLib,
+         "-L", turtleLib,
+         "-L", libDir,
          "$netMain/x/net.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -206,10 +213,10 @@ val compileJson = tasks.register<JavaExec>("compileJson") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
+         "-L", coreLib,
+         "-L", turtleLib,
          "$jsonMain/x/json.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -225,10 +232,10 @@ val compileOODB = tasks.register<JavaExec>("compileOODB") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
+         "-L", coreLib,
+         "-L", turtleLib,
          "$oodbMain/x/oodb.x")
    mainClass.set("org.xvm.tool.Compiler")
 }
@@ -244,11 +251,11 @@ val compileIMDB = tasks.register<JavaExec>("compileIMDB") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
-         "-L", "$libDir",
+         "-L", coreLib,
+         "-L", turtleLib,
+         "-L", libDir,
          "$imdbMain/x/imdb.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -264,11 +271,11 @@ val compileJsonDB = tasks.register<JavaExec>("compileJsonDB") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
-         "-L", "$libDir",
+         "-L", coreLib,
+         "-L", turtleLib,
+         "-L", libDir,
          "$jsondbMain/x/jsondb.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -284,11 +291,11 @@ val compileWeb  = tasks.register<JavaExec>("compileWeb") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
-         "-L", "$libDir",
+         "-L", coreLib,
+         "-L", turtleLib,
+         "-L", libDir,
          "$webMain/x/web.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -304,11 +311,11 @@ val compileWebauth = tasks.register<JavaExec>("compileWebauth") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
-         "-L", "$libDir",
+         "-L", coreLib,
+         "-L", turtleLib,
+         "-L", libDir,
          "$webauthMain/x/webauth.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -324,11 +331,11 @@ val compileXenia = tasks.register<JavaExec>("compileXenia") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
-         "-L", "$libDir",
+         "-L", coreLib,
+         "-L", turtleLib,
+         "-L", libDir,
          "$xeniaMain/x/xenia.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
@@ -344,17 +351,17 @@ val compileBridge = tasks.register<JavaExec>("compileBridge") {
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
     classpath(javatoolsJar)
-    args("-o", "$libDir",
+    args("-o", libDir,
          "-version", "$xdkVersion",
-         "-L", "$coreLib",
-         "-L", "$turtleLib",
-         "-L", "$libDir",
+         "-L", coreLib,
+         "-L", turtleLib,
+         "-L", libDir,
          "$bridgeMain/x/_native.x")
     mainClass.set("org.xvm.tool.Compiler")
 
     doLast {
         file("$libDir/_native.xtc").
-        renameTo(file("$bridgeLib"))
+        renameTo(file(bridgeLib))
         println("Finished task: compileBridge")
     }
 }
@@ -372,11 +379,11 @@ val build = tasks.register("build") {
     // compile Ecstasy
     val coreSrc = fileTree(ecstasyMain).getFiles().stream().
             mapToLong({f -> f.lastModified()}).max().orElse(0)
-    val coreDest = file("$coreLib").lastModified()
+    val coreDest = file(coreLib).lastModified()
 
     val turtleSrc = fileTree(turtleMain).getFiles().stream().
             mapToLong({f -> f.lastModified()}).max().orElse(0)
-    val turtleDest = file("$turtleLib").lastModified()
+    val turtleDest = file(turtleLib).lastModified()
 
     if (coreSrc > coreDest || turtleSrc > turtleDest) {
         dependsOn(compileEcstasy)
@@ -507,7 +514,7 @@ val prepareDirs = tasks.register("prepareDirs") {
     mustRunAfter("clean")
 
     doLast {
-        mkdir("$distDir")
+        mkdir(distDir)
     }
 }
 
@@ -533,7 +540,7 @@ tasks.register("dist-local") {
             val libexecDir = file("$xecFile/../..")
             var updated    = false;
 
-            val srcBin = fileTree("$binDir").getFiles().stream().
+            val srcBin = fileTree(binDir).getFiles().stream().
                     mapToLong({f -> f.lastModified()}).max().orElse(0)
             val dstBin = fileTree("$libexecDir/bin").getFiles().stream().
                     mapToLong({f -> f.lastModified()}).max().orElse(0)
@@ -633,10 +640,10 @@ val distEXE = tasks.register("distEXE") {
             val ico  = "${launcherMain}/c/x.ico"
 
             project.exec {
-                environment("NSIS_SRC", "${xdkDir}")
-                environment("NSIS_ICO", "${ico}")
+                environment("NSIS_SRC", xdkDir)
+                environment("NSIS_ICO", ico)
                 environment("NSIS_VER", "${distName}")
-                environment("NSIS_OUT", "${dest}")
+                environment("NSIS_OUT", dest)
                 commandLine("makensis", "${src}", "-NOCD")
             }
         }
