@@ -3,10 +3,10 @@ package org.xvm;
 /**
  * Root source file for XTC language plugin. The XTC language plugin is a binary plugin, as per
  * best practice, since script plugins should never contain reusable logic.
- *
+ * <p>
  * We also need the significantly more generic properties of Java for the XTC language
  * integration.
- *
+ * <p>
  * The plugin aims to provide IntelliJ integration for everything about XTC, but should
  * probably also define the inner working/actual logic for the standard Gradle lifecycle tasks,
  * so that building a project written in XTC is no different than building one in Java.

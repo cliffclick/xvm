@@ -5,6 +5,7 @@
  */
 
 plugins {
+    `kotlin-dsl`
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     `java-gradle-plugin`
     // Support publishing an artefact for XVM, to local ore remote repos
@@ -12,6 +13,7 @@ plugins {
     // Support convention plugins written in Kotlin. They are scripts in 'src/main/kotlin' that automatically become available as plugins in the main build.    `kotlin-dsl`
     kotlin("jvm") version "1.8.10"
 }
+
 
 gradlePlugin {
     plugins {
@@ -21,6 +23,7 @@ gradlePlugin {
         }
     }
 }
+
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")

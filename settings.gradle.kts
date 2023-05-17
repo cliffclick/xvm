@@ -2,7 +2,7 @@ pluginManagement {
     // Include 'plugins build' to define convention plugins. (incubating, but new best practice to avoid complete
     // recompilations of the project when using buildSrc. While buildSrc is implicit as a separate build, we have
     // to explicitly use "includeBuild" to pick up the build-logic folder.
-    includeBuild("build-logic")
+    //includeBuild("build-logic")
 }
 
 dependencyResolutionManagement {

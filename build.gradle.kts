@@ -7,9 +7,9 @@ import org.gradle.internal.impldep.org.apache.commons.io.output.ByteArrayOutputS
  */
 plugins {
     base
-    idea
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
     id("com.dorongold.task-tree") version "2.1.1" // enables the 'gradle <task_1> [task_2 ... task_n] taskTree' task
+    id("org.xvm.myproject.conventions")
 }
 
 group = "org.xvm"
@@ -27,6 +27,9 @@ subprojects {
         }
     }
 }
+
+val doSomethingWithString: (String) -> String by extra
+println("GetCI: " + doSomethingWithString("foo"))
 
 // Base tasks: clean, check, assemble, build, buildCONFIGURATION, cleanTASK
 // The build task will be the default implementation, and since the settings.gradle.kts already

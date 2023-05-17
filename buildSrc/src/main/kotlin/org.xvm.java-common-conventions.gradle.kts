@@ -53,3 +53,11 @@ tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     //options.compilerArgs = listOf("-Xlint:unchecked")
 }
+
+fun resolveIsCI() : String {
+    return System.getenv("CI")
+}
+
+fun resolveBuildNum() : String {
+    return System.getenv("BUILD_NUMBER")
+}
