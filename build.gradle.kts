@@ -13,6 +13,7 @@ plugins {
 }
 
 val getXvmVersion: () -> String by extra
+println("getXvmVersion: " + getXvmVersion())
 
 group = "org.xvm"
 version = getXvmVersion()

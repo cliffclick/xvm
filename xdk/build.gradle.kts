@@ -2,10 +2,11 @@
  * Build files for the XDK.
  */
 
+import java.io.ByteArrayOutputStream
 import java.nio.file.Paths
 
 plugins {
-    id("org.xvm.java-common-conventions")
+    id("org.xvm.project.conventions")
 }
 
 val javatools     = project(":javatools")
@@ -60,7 +61,7 @@ val buildNum        = System.getenv("BUILD_NUMBER")
 if (isCI != null && isCI != "0" && isCI != "false" && buildNum != null) {
     distName = "${distName}ci${buildNum}"
 
-    val output = java.io.ByteArrayOutputStream()
+    val output ByteArrayOutputStream()
     project.exec {
         commandLine("git", "rev-parse", "HEAD")
         standardOutput = output
@@ -73,6 +74,11 @@ if (isCI != null && isCI != "0" && isCI != "false" && buildNum != null) {
 }
  */
 
+val getDistributionName: () -> String by extra
+// TODO easier to call ext.getDistributionName() except for all this?
+// or import it?
+
+val distName = getDistributionName()
 println("*** XDK distName=${distName}")
 
 tasks.register("clean") {
@@ -526,7 +532,7 @@ tasks.register("dist-local") {
 
     doLast {
         // getting the homebrew xdl location using "readlink -f `which xec`" command
-        val output = java.io.ByteArrayOutputStream()
+        val output = ByteArrayOutputStream()
 
         project.exec {
             commandLine("which", "xec")
@@ -623,7 +629,7 @@ val distEXE = tasks.register("distEXE") {
     dependsOn(prepareDirs)
 
     doLast {
-        val output = java.io.ByteArrayOutputStream()
+        val output = ByteArrayOutputStream()
         project.exec {
             commandLine("which", "makensis")
             standardOutput = output

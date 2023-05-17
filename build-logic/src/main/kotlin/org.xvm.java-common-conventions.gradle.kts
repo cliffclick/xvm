@@ -12,6 +12,15 @@ plugins {
 
 val versionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val defaultJdkVersion = 17
+val jdkVersion = resolveJdkVersion()
+
+println("jdkVersion: $jdkVersion")
+
+val getJdkVersion by extra {
+    fun() : String {
+        return resolveJdkVersion()
+    }
+}
 
 repositories {
     mavenCentral()
@@ -30,7 +39,7 @@ dependencies {
 
 java {
     toolchain {
-        val ver : String = getJdkVersion()
+        val ver : String = resolveJdkVersion()
         println("Java Toolchain will use jdkVersion: $ver")
         languageVersion.set(JavaLanguageVersion.of(ver))
     }
@@ -64,8 +73,3 @@ fun resolveJdkVersion() : String {
     return versionCatalogLookupVersion("jdk", defaultJdkVersion)
 }
 
-val getJdkVersion by extra {
-    fun() : String {
-        return resolveJdkVersion()
-    }
-}
