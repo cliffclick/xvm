@@ -161,7 +161,7 @@ included Gradle Wrapper from within the `xvm` directory:
 
 Or on Windows: 
 
-    gradlew build
+    gradlew.bat build
 
 Note that Windows may require the `JAVA_TOOLS_OPTIONS` environment variable to be set to
 `-Dfile.encoding=UTF-8` in the Environment Variables window that can be accessed from Control Panel.
