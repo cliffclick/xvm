@@ -43,17 +43,15 @@ subprojects {
     }
 }
 
-// Base tasks: clean, check, assemble, build, buildCONFIGURATION, cleanTASK
-// The build task will be the default implementation, and since the settings.gradle.kts already
-// include all subprojects, we won't need a specific build task declared here. This is exactly
-// What it would do already
-
 val buildTask = tasks.register("build") {
     group = "Build"
     description = "Build all projects"
     dependsOn(project("xdk:").tasks["build"])
     doFirst {
-        println("Running root project build.")
+        println("Running root project build for '${project.name}'...")
+    }
+    doLast {
+        println("Finished root project build for '${project.name}'.")
     }
 }
 

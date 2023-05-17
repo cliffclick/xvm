@@ -21,5 +21,6 @@ gradlePlugin {
             id = "xtc-lang-plugin"
             implementationClass = "org.xvm.XtcLangPlugin"
         }
+        println("XTC Language plugin hook-in point at: $xtcLang")
     }
 }
