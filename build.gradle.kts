@@ -12,11 +12,11 @@ plugins {
     id("org.xvm.project.conventions")
 }
 
-val getXvmVersion: () -> String by extra
-println("getXvmVersion: " + getXvmVersion())
+val xvmVersion: String by extra
+println("getXvmVersion: " + xvmVersion)
 
 group = "org.xvm"
-version = getXvmVersion()
+version = xvmVersion
 
 // TODO REMOVE THESE
 if ("true".equals(System.getenv("DEBUG_BUILD"), ignoreCase = true)) {

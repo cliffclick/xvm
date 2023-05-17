@@ -6,7 +6,7 @@ import java.io.ByteArrayOutputStream
 import java.nio.file.Paths
 
 plugins {
-    id("org.xvm.project.conventions")
+    id("org.xvm.project.conventions") // TODO Do not inherit Java!
 }
 
 val javatools     = project(":javatools")
@@ -52,34 +52,11 @@ val turtleLib       = "$javaDir/javatools_turtle.xtc"
 val bridgeLib       = "$javaDir/javatools_bridge.xtc"
 
 val distDir         = "$buildDir/dist"
-
 val xdkVersion      = rootProject.version
-/*
-var distName        = xdkVersion
-val isCI            = System.getenv("CI")
-val buildNum        = System.getenv("BUILD_NUMBER")
-if (isCI != null && isCI != "0" && isCI != "false" && buildNum != null) {
-    distName = "${distName}ci${buildNum}"
-
-    val output ByteArrayOutputStream()
-    project.exec {
-        commandLine("git", "rev-parse", "HEAD")
-        standardOutput = output
-        setIgnoreExitValue(true)
-    }
-    val changeId = output.toString().trim()
-    if (changeId.length > 0) {
-        distName = "${distName}+${changeId}"
-    }
-}
- */
 
 val getDistributionName: () -> String by extra
-// TODO easier to call ext.getDistributionName() except for all this?
-// or import it?
-
 val distName = getDistributionName()
-println("*** XDK distName=${distName}")
+println("*** XDK distName=" + distName)
 
 tasks.register("clean") {
     group       = "Build"

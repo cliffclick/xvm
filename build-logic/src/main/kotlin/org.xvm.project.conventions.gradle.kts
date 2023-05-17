@@ -1,25 +1,21 @@
 import java.io.ByteArrayOutputStream
 
-// TODO: Project convention should really not care about Java if we can help it. It is the
-//   other way around, really.
-plugins {
-    id("org.xvm.java-common-conventions")
-}
+val versionCatalog by extra(extensions.getByType<VersionCatalogsExtension>().named("libs"))
+val jdkVersion by extra(resolveJdkVersion())
+val xvmVersion by extra(resolveXvmVersion())
+val defaultJdkVersion = 17
 
-val getXvmVersion by extra {
-    fun() : String {
-        return resolveXvmVersion()
-    }
-}
+println("Versioncatalog: $versionCatalog")
 
-val getDistributionName by extra {
+var getDistributionName by extra {
     fun() : String {
         val isCI = resolveIsCI()
         val buildNum = resolveBuildNum()
+        val jdkVersion = jdkVersion
 
-        println("Resolve distname: isCI=$isCI, buildNum=$buildNum")
+        println("Resolve distName: isCI=$isCI, buildNum=$buildNum, jdkVersion=$jdkVersion")
 
-        var distName = testGetter()
+        var distName = jdkVersion
         if (isCI != null && isCI != "0" && !"false".equals(isCI, ignoreCase = true) && buildNum != null) {
             distName += "ci$buildNum"
             val output = ByteArrayOutputStream()
@@ -37,20 +33,33 @@ val getDistributionName by extra {
     }
 }
 
+fun resolveJdkVersion() : String {
+    return versionCatalogLookupVersion("jdk", defaultJdkVersion)
+}
+
 fun resolveXvmVersion() : String {
-    return "0.4.3"
+    return versionCatalogLookupVersion("xvm")
 }
 
-fun testGetter() : String {
-    println("THIS IS WRONG")
-    return "17"
-}
-
-fun resolveIsCI() : String {
+fun resolveIsCI() : String? {
     return System.getenv("CI")
 }
 
-fun resolveBuildNum() : String {
+fun resolveBuildNum() : String? {
     return System.getenv("BUILD_NUMBER")
 }
 
+fun versionCatalogLookupLibrary(name : String): Provider<MinimalExternalModuleDependency> {
+    return versionCatalog.findLibrary(name).get()
+}
+
+fun versionCatalogLookupVersion(name : String, defaultValue : Any? = null): String {
+    val version = versionCatalog.findVersion(name)
+    if (version.isPresent) { // TODO: There has to be a pretty Kotlin construct for this Java style Optional
+        return version.get().toString()
+    }
+    if (defaultValue == null) {
+        throw NoSuchElementException(name)
+    }
+    return defaultValue.toString()
+}
