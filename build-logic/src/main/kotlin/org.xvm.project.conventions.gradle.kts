@@ -4,3 +4,10 @@ val doSomethingWithString by extra {
     }
 }
 
+fun resolveIsCI() : String {
+    return System.getenv("CI")
+}
+
+fun resolveBuildNum() : String {
+    return System.getenv("BUILD_NUMBER")
+}
