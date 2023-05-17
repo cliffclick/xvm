@@ -6,7 +6,7 @@ import java.io.ByteArrayOutputStream
 import java.nio.file.Paths
 
 plugins {
-    id("org.xvm.project.conventions") // TODO Do not inherit Java!
+    id("org.xvm.project-conventions")
 }
 
 val javatools     = project(":javatools")
@@ -56,7 +56,6 @@ val xdkVersion      = rootProject.version
 
 val getDistributionName: () -> String by extra
 val distName = getDistributionName()
-println("*** XDK distName=" + distName)
 
 tasks.register("clean") {
     group       = "Build"

@@ -2,25 +2,21 @@
  * Conventions common for all projects that use Java, and their tests
  */
 plugins {
-    id("org.xvm.project.conventions")
+    id("org.xvm.project-conventions")
     java
 }
 
 val versionCatalog : VersionCatalog by extra
 
-// TODO: This should automatically come from settings.gradle.kts already, remove it?
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     constraints {
-        // Define dependency versions as constraints
-        implementation("org.apache.commons:commons-text:1.10.0")
+        versionCatalog.findLibrary("apache-commons-text").ifPresent() {
+            implementation(it)
+        }
     }
 
     versionCatalog.findLibrary("junit").ifPresent {
-        println("conventions:common-java:junit: $it")
+        println("${javaProjectName()} testImplementation: JUnit (version: ${it.get()})")
         testImplementation(it)
     }
 }
@@ -32,7 +28,7 @@ dependencies {
 java {
     toolchain {
         val jdkVersion : String by extra
-        println("Java Toolchain will use jdkVersion: $jdkVersion")
+        println("${javaProjectName()} toolchain: JDK version $jdkVersion")
         languageVersion.set(JavaLanguageVersion.of(jdkVersion))
     }
 }
@@ -40,8 +36,14 @@ java {
 tasks.named<Test>("test") {
     useJUnit() // TODO: Migrate to useJUnitPlatform(), Jupiter.
     maxHeapSize = "1G"
+    println("${javaProjectName()} task: $name.maxHeapSize = $maxHeapSize, uses JUnit.")
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
+    println("${javaProjectName()} task: $name.options.encoding = ${options.encoding}")
+}
+
+fun javaProjectName() : String {
+    return "'${project.name}' (Java project):"
 }

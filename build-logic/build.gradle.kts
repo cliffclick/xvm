@@ -5,13 +5,10 @@
  */
 
 plugins {
-    `kotlin-dsl`
-    // Support convention plugins written in Kotlin. They are scripts in 'src/main/kotlin' that automatically become available as plugins in the main build.    `kotlin-dsl`
-    kotlin("jvm") version "1.8.20"
-    // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
-    `java-gradle-plugin`
-    // Support publishing an artefact for XVM, to local ore remote repos
-    `maven-publish`
+    `kotlin-dsl` // Enable precompiled scripts for build-logic project, which supersedes buildSrc
+    kotlin("jvm") version "1.8.20" // Support convention plugins written in Kotlin. They are scripts in 'src/main/kotlin' that automatically become available as plugins in the main build.
+    `java-gradle-plugin` // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
+    `maven-publish` // Support publishing an artefact for XVM, to local ore remote repos
 }
 
 dependencies {

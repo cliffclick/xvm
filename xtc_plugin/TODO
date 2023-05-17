@@ -1,1 +1,0 @@
-Move this up, and integrate the simple root project logic into the outer root project. We initially keep this as a complete root project with subprojects/directories one folder down, so as not to initially interfer with the rest of the bxvm build until it is integrated at least as an empty functionality working model and compile.

@@ -1,6 +1,7 @@
 import java.io.ByteArrayOutputStream
 
-val versionCatalog by extra(extensions.getByType<VersionCatalogsExtension>().named("libs"))
+val versionCatalogName = "libs"
+val versionCatalog by extra(extensions.getByType<VersionCatalogsExtension>().named(versionCatalogName))
 val jdkVersion by extra(resolveJdkVersion())
 val xvmVersion by extra(resolveXvmVersion())
 val defaultJdkVersion = 17
