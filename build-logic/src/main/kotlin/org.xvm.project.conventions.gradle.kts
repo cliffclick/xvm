@@ -5,8 +5,6 @@ val jdkVersion by extra(resolveJdkVersion())
 val xvmVersion by extra(resolveXvmVersion())
 val defaultJdkVersion = 17
 
-println("Versioncatalog: $versionCatalog")
-
 var getDistributionName by extra {
     fun() : String {
         val isCI = resolveIsCI()
@@ -25,7 +23,7 @@ var getDistributionName by extra {
                 isIgnoreExitValue = true
             }
             val changeId : String = output.toString().trim()
-            if (!changeId.isEmpty()) {
+            if (changeId.isNotEmpty()) {
                 distName += "+$changeId"
             }
         }

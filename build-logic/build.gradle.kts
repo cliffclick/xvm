@@ -14,6 +14,9 @@ plugins {
     `maven-publish`
 }
 
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+}
 
 gradlePlugin {
     plugins {
@@ -23,11 +26,3 @@ gradlePlugin {
         }
     }
 }
-
-
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
-}
-
-val xvmVersion = libs.versions.xvm.get()
-println("XVM Version: $xvmVersion")

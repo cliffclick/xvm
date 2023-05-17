@@ -13,15 +13,15 @@ plugins {
 }
 
 val xvmVersion: String by extra
-println("getXvmVersion: " + xvmVersion)
+println("xvmVersion: $xvmVersion")
 
 group = "org.xvm"
 version = xvmVersion
 
 // TODO REMOVE THESE
 if ("true".equals(System.getenv("DEBUG_BUILD"), ignoreCase = true)) {
-    gradle.startParameter.showStacktrace = org.gradle.api.logging.configuration.ShowStacktrace.ALWAYS_FULL
-    gradle.startParameter.logLevel = org.gradle.api.logging.LogLevel.DEBUG
+    gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS_FULL
+    gradle.startParameter.logLevel = LogLevel.DEBUG
     println("Warning: DEBUG_BUILD is enabled, and output may be quite verbose.")
 }
 
