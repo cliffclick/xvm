@@ -1,3 +1,0 @@
-Subproject: xtc_plugin
-
-* Move this up, and integrate the simple root project logic into the outer root project.
