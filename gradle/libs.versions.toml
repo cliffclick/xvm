@@ -15,8 +15,8 @@ kotlin = "1.8.20"
 xvm-artifact = { group = "org.xvm", name = "xvm", version.ref = "xvm" }
 javax-activation = { group = "com.sun.activation", name = "javax.activation", version = "1.2.0" }
 apache-commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.10.0" }
-jakarta-xml-bind-api = { group = "jakarta.xml.bind", name = "jakarta.xml.bind-api", version = "4.0.0" }
-jaxb-runtime = { group = "org.glassfish.jaxb", name = "jaxb-runtime", version = "4.0.2" }
+jakarta-xml-bind-api = { group = "jakarta.xml.bind", name = "jakarta.xml.bind-api", version = "2.3.2" }
+jaxb-runtime = { group = "org.glassfish.jaxb", name = "jaxb-runtime", version = "2.3.2" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 

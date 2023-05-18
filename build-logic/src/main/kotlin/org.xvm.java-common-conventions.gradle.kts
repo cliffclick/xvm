@@ -42,7 +42,8 @@ tasks.named<Test>("test") {
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    println("${javaProjectName()} task: $name.options.encoding = ${options.encoding}")
+    options.compilerArgs.add("-deprecation")
+    println("${javaProjectName()} task: $name.options [encoding: ${options.encoding}, compilerArgs: ${options.compilerArgs}]")
 }
 
 fun javaProjectName() : String {
