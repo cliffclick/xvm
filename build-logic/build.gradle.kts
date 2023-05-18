@@ -5,14 +5,14 @@
  */
 
 plugins {
-    `kotlin-dsl` // Enable precompiled scripts for build-logic project, which supersedes buildSrc
-    kotlin("jvm") version "1.8.20" // Support convention plugins written in Kotlin. They are scripts in 'src/main/kotlin' that automatically become available as plugins in the main build.
     `java-gradle-plugin` // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     `maven-publish` // Support publishing an artefact for XVM, to local ore remote repos
+    `kotlin-dsl` // Enable precompiled scripts for build-logic project, which supersedes buildSrc
+    alias(libs.plugins.kotlin.jvm) // Support convention plugins written in Kotlin. They are scripts in 'src/main/kotlin' that automatically become available as plugins in the main build.
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+    implementation(libs.kotlin.gradle.plugin)
 }
 
 gradlePlugin {
@@ -21,6 +21,6 @@ gradlePlugin {
             id = "xtc-lang-plugin"
             implementationClass = "org.xvm.XtcLangPlugin"
         }
-        println("XTC Language plugin hook-in point at: $xtcLang")
+        println("XTC Language plugin injection point at: $xtcLang") // TODO: Move to separate subproject
     }
 }

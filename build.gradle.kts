@@ -16,9 +16,9 @@ import org.jetbrains.gradle.ext.*
  */
 
 plugins {
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
-    id("com.dorongold.task-tree") version "2.1.1" // enables the 'gradle <task_1> [task_2 ... task_n] taskTree' task
     id("org.xvm.project-conventions")
+    alias(libs.plugins.idea.ext)
+    alias(libs.plugins.task.tree) // enables the 'gradle <task_1> [task_2 ... task_n] taskTree' task
 }
 
 val xvmVersion: String by extra
@@ -41,6 +41,9 @@ subprojects {
             substitute(module("org.xtclang.xvm:javatools")).using(project(":javatools"))
         }
     }
+
+    // Enable listing dependencies for all projects, with "./gradlew allDeps"
+    tasks.register<DependencyReportTask>("allDeps")
 }
 
 val buildTask = tasks.register("build") {
@@ -82,7 +85,7 @@ val cleanTask = tasks.register("clean") {
  */
 val gitCleanTask = tasks.register("gitClean") {
     group = "Delete"
-    description = "Cleans everything, including the Gradle cache, and items not under source control. Also runs 'gradle clean'"
+    description = "Cleans everything, including the Gradle cache, not under source control."
     exec {
         standardOutput = ByteArrayOutputStream()
         workingDir = rootDir
@@ -115,12 +118,8 @@ tasks.register("rebuild") {
     description = "Erase all current state of the build, and redo the build from scratch"
     dependsOn(cleanAllTask)
     finalizedBy(buildTask)
-
     doFirst {
         println("Rebuilding all, after deleting *all* cached data under the repo root...")
-    }
-    doLast {
-        println("Rebuild finished.")
     }
 }
 
@@ -130,6 +129,8 @@ tasks.register("rebuild") {
  * the hands of our build system, called behind the scenes by the IntelliJ tooling API, and that is not
  * ideal.
  */
+
+/* TODO: Temporarily commented out to see if this is what breaks the IDEA settings
 afterEvaluate {
     println("Root project '$name' has finished evaluation (and by inference, all its subprojects).")
     listOfNotNull("ideaModule", "ideaProject", "ideaWorkspace", "idea").forEach {
@@ -142,7 +143,7 @@ afterEvaluate {
             }
         }
     }
-}
+}*/
 
 /*
  * Provides a hook where projects have been evaluated before the build.
@@ -183,13 +184,13 @@ idea {
                 // An XTC language would be the best way to get there, both for the pure Gradle build, but also
                 // for any IDE integrations with e.g. debuggers, lexing and breakpoints.
                 delegateBuildRunToGradle = true
-                testRunner = ActionDelegationConfig.TestRunner.PLATFORM
+                testRunner = ActionDelegationConfig.TestRunner.GRADLE // "PLATFORM" for IDEA.
                 println("Delegate build runs to Gradle: $delegateBuildRunToGradle (testRunner: $testRunner)")
             }
 
             compiler {
-                enableAutomake = false
                 autoShowFirstErrorInEditor = true
+                enableAutomake = false
                 parallelCompilation = true
                 javac {
                     javacAdditionalOptions = "-encoding UTF-8" // TODO: Add a pedantic mode with e.g. -Xlint:all too

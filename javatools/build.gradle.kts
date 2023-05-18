@@ -45,7 +45,6 @@ tasks.register<Copy>("copyUtils") {
 
 // TODO We just want to get the lib_xtc implicit.x in our resource folder
 
-
 tasks.jar {
     //from(project(":javatools_utils").sourceSets["main"].output.classesDirs)
     //from(project(":lib_ecstasy").sourceSets["main"].resources.srcDirs)
@@ -80,7 +79,4 @@ tasks.compileTestJava {
 
 dependencies {
     implementation("org.xtclang.xvm:javatools_utils:")
-//    implementation(project(":lib_ecstasy"))
-    // Use JUnit test framework
-    //testImplementation("junit:junit:4.12")
 }

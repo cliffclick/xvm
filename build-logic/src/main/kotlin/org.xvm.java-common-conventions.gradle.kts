@@ -1,23 +1,24 @@
+import gradle.kotlin.dsl.accessors._8a0c834e2c3bd9345c663be0c81ffd6c.javaToolchains
+
 /**
  * Conventions common for all projects that use Java, and their tests
  */
 plugins {
-    id("org.xvm.project-conventions")
     java
+    id("org.xvm.project-conventions")
 }
 
-val versionCatalog : VersionCatalog by extra
+val findLibrary: (String) -> Provider<MinimalExternalModuleDependency> by extra
 
 dependencies {
-    constraints {
-        versionCatalog.findLibrary("apache-commons-text").ifPresent() {
-            implementation(it)
-        }
-    }
+    val junit = findLibrary("junit")
+    testImplementation(junit)
+    println("${javaProjectName()} testImplementation: JUnit (${junit.get()})")
 
-    versionCatalog.findLibrary("junit").ifPresent {
-        println("${javaProjectName()} testImplementation: JUnit (version: ${it.get()})")
-        testImplementation(it)
+    constraints {
+        val commonsText = findLibrary("apache-commons-text")
+        implementation(commonsText)
+        println("${javaProjectName()} apache-commons-text: (${commonsText.get()})")
     }
 }
 
@@ -28,8 +29,8 @@ dependencies {
 java {
     toolchain {
         val jdkVersion : String by extra
-        println("${javaProjectName()} toolchain: JDK version $jdkVersion")
         languageVersion.set(JavaLanguageVersion.of(jdkVersion))
+        println("${javaProjectName()} Java toolchain language version: $jdkVersion")
     }
 }
 

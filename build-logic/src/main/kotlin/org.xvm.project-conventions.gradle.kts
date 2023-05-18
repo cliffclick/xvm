@@ -1,12 +1,18 @@
 import java.io.ByteArrayOutputStream
 
-val versionCatalogName = "libs"
-val versionCatalog by extra(extensions.getByType<VersionCatalogsExtension>().named(versionCatalogName))
+// TODO val libs = ... is a workaround, since precompiled plugins do not work with version catalogs
+val libs by extra(extensions.getByType<VersionCatalogsExtension>().named("libs"))
 val jdkVersion by extra(resolveJdkVersion())
 val xvmVersion by extra(resolveXvmVersion())
 val defaultJdkVersion = 17
 
-var getDistributionName by extra {
+val findLibrary by extra {
+    fun(name : String) : Provider<MinimalExternalModuleDependency> {
+        return resolveLibrary(name)
+    }
+}
+
+val getDistributionName by extra {
     fun() : String {
         val isCI = resolveIsCI()
         val buildNum = resolveBuildNum()
@@ -33,11 +39,11 @@ var getDistributionName by extra {
 }
 
 fun resolveJdkVersion() : String {
-    return versionCatalogLookupVersion("jdk", defaultJdkVersion)
+    return resolveVersion("jdk", defaultJdkVersion)
 }
 
 fun resolveXvmVersion() : String {
-    return versionCatalogLookupVersion("xvm")
+    return resolveVersion("xvm")
 }
 
 fun resolveIsCI() : String? {
@@ -48,12 +54,12 @@ fun resolveBuildNum() : String? {
     return System.getenv("BUILD_NUMBER")
 }
 
-fun versionCatalogLookupLibrary(name : String): Provider<MinimalExternalModuleDependency> {
-    return versionCatalog.findLibrary(name).get()
+fun resolveLibrary(name : String) : Provider<MinimalExternalModuleDependency> {
+    return libs.findLibrary(name).get()
 }
 
-fun versionCatalogLookupVersion(name : String, defaultValue : Any? = null): String {
-    val version = versionCatalog.findVersion(name)
+fun resolveVersion(name: String, defaultValue: Any? = null): String {
+    val version = libs.findVersion(name)
     if (version.isPresent) { // TODO: There has to be a pretty Kotlin construct for this Java style Optional
         return version.get().toString()
     }

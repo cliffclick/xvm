@@ -16,12 +16,11 @@ dependencyResolutionManagement {
     }
 }
 
-// TODO: If needed, add support for applying the foojay-resolver plugin to allow automatic download of JDKs
-//plugins {
-//    id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
-//}
-
 rootProject.name = "xvm"
+
+fun discoverSubprojects() {
+    println("TODO")
+}
 
 include(":javatools_utils")     // produces javatools_utils.jar for org.xvm.utils package
 include(":javatools_unicode")   // produces data files -> :lib_ecstasy/resources, only on request
@@ -42,5 +41,5 @@ include(":lib_web")             // produces web.xtc
 include(":lib_webauth")         // produces webauth.xtc
 include(":lib_xenia")           // produces xenia.xtc
 include(":xdk")                 // builds the above modules (ecstasy.xtc, javatools_bridge.xtc, json.xtc, etc.)
-include(":manualTests")         // TODO temporary; allowing gradle test execution
+include(":manualTests")         // TODO: Temporary; allowing gradle test execution
 //include(":wiki")              // TODO: Implement the wiki generation task.

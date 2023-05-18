@@ -22,6 +22,7 @@ tasks.withType(Jar::class) {
     }
 }
 
+/* Should be unncessary - the test deps are declared in the common Java conventions
 dependencies {
     testImplementation(libs.junit)
 }
