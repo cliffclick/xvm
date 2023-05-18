@@ -12,6 +12,15 @@ plugins {
     id("cpp-application")
 }
 
+// FOR NOW - DO NOT clean the build directory, those are checked in binaries
+// unless we complete this native compilation plugin.
+tasks.named<Task>("clean") {
+    enabled = false
+    doLast {
+        println("Disabled ${project.name}.clean task until Gradle integration of launcher builds.")
+    }
+}
+
 application {
     targetMachines.set(listOf(
         machines.linux.x86_64,
