@@ -51,3 +51,4 @@ include(":lib_xenia")           // produces xenia.xtc
 include(":xdk")                 // builds the above modules (ecstasy.xtc, javatools_bridge.xtc, json.xtc, etc.)
 include(":manualTests")         // TODO: Temporary; allowing gradle test execution
 //include(":wiki")              // TODO: Implement the wiki generation task.
+include(":plugin_xtc")

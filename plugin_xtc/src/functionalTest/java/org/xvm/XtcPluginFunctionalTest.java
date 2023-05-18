@@ -33,7 +33,7 @@ class XtcPluginFunctionalTest {
         writeString(getSettingsFile(), "");
         writeString(getBuildFile(),
             "plugins {" +
-            "  id('org.xvm.greeting')" +
+            "  id('org.xvm.xtc')" +
             "}");
 
         // Run the build
@@ -45,7 +45,7 @@ class XtcPluginFunctionalTest {
         BuildResult result = runner.build();
 
         // Verify the result
-        assertTrue(result.getOutput().contains("Hello from plugin 'org.xvm.greeting'"));
+        assertTrue(result.getOutput().contains("Hello from plugin 'org.xvm.xtc'"));
     }
 
     private void writeString(File file, String string) throws IOException {

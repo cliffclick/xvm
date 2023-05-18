@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * A simple unit test for the 'org.xvm.greeting' plugin.
+ * A simple unit test for the 'org.xvm.xtc' plugin.
  */
 class XtcPluginTest {
     @Test void pluginRegistersATask() {
         // Create a test project and apply the plugin
         Project project = ProjectBuilder.builder().build();
-        project.getPlugins().apply("org.xvm.greeting");
+        project.getPlugins().apply("org.xvm.xtc");
 
         // Verify the result
         assertNotNull(project.getTasks().findByName("greeting"));

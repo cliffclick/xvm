@@ -8,7 +8,7 @@ plugins {
 gradlePlugin {
     plugins {
         val xtc by plugins.creating {
-            id = "xtc-plugin"
+            id = "org.xvm.xtc"
             implementationClass = "org.xvm.XtcPlugin"
         }
         println("XTC Language plugin injection point at: $xtc") // TODO: Move to separate included build
