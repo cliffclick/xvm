@@ -19,8 +19,15 @@ dependencyResolutionManagement {
 rootProject.name = "xvm"
 
 fun discoverSubprojects() {
-    println("TODO")
+    println("Looking for Gradle aware subprojects:")
+    rootDir.walk().forEach {
+        if (it.isFile && "build.gradle.kts".equals(it.name)) {
+            println("  subproject directory: '${it.parent}'")
+        }
+    }
 }
+
+discoverSubprojects()
 
 include(":javatools_utils")     // produces javatools_utils.jar for org.xvm.utils package
 include(":javatools_unicode")   // produces data files -> :lib_ecstasy/resources, only on request
