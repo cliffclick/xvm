@@ -1,3 +1,5 @@
+rootProject.name = "xvm"
+
 pluginManagement {
     // Include 'plugins build' to define convention plugins. (incubating, but new best practice to avoid complete
     // recompilations of the project when using buildSrc. While buildSrc is implicit as a separate build, we have
@@ -16,13 +18,12 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "xvm"
-
 fun discoverSubprojects() {
     println("Looking for Gradle aware subprojects:")
     rootDir.walk().forEach {
         if (it.isFile && "build.gradle.kts".equals(it.name)) {
             println("  subproject directory: '${it.parent}'")
+            // TODO: Automatically include these, instead of explicitly specifying them below.
         }
     }
 }

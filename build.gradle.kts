@@ -81,7 +81,9 @@ val cleanTask = tasks.register("clean") {
  * we want them, by using the idea-ext plugin, so currently that is deleted as well. This is a good
  * thing, because there are bugs in the IntelliJ Kotlin DSL at times, that require settings to be
  * wiped, but it may not be great if the developer has significant configuration changes to IntelliJ,
- * so we may want to add a mode where we preserve the .idea directory in the root.
+ * so we currently ignore the contents of the .idea directory, and the user has to delete it manually.
+ * This can be necessary sometimes, because there is a fair amount of how IntelliJ handles modern
+ * kotlin-dsl.
  */
 val gitCleanTask = tasks.register("gitClean") {
     group = "Delete"
@@ -90,8 +92,7 @@ val gitCleanTask = tasks.register("gitClean") {
         standardOutput = ByteArrayOutputStream()
         workingDir = rootDir
         executable = "git"
-        args("clean", "-xfd")
-        //args("clean", "-xfd", "-e", ".idea") // TODO:
+        args("clean", "-xfd", "-e", ".idea")
         doLast {
             println("gitClean:")
             standardOutput.toString().lines().forEach {
@@ -129,8 +130,6 @@ tasks.register("rebuild") {
  * the hands of our build system, called behind the scenes by the IntelliJ tooling API, and that is not
  * ideal.
  */
-
-/* TODO: Temporarily commented out to see if this is what breaks the IDEA settings
 afterEvaluate {
     println("Root project '$name' has finished evaluation (and by inference, all its subprojects).")
     listOfNotNull("ideaModule", "ideaProject", "ideaWorkspace", "idea").forEach {
@@ -143,7 +142,7 @@ afterEvaluate {
             }
         }
     }
-}*/
+}
 
 /*
  * Provides a hook where projects have been evaluated before the build.
