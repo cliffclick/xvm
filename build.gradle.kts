@@ -51,13 +51,13 @@ subprojects {
 
 val buildTask = tasks.register("build") {
     group = "Build"
-    description = "Build all projects"
+    description = "Build XDK"
     dependsOn(project("xdk:").tasks["build"])
     doFirst {
-        println("Running root project build for '${project.name}'...")
+        println("Running project build for '${project.name}'...")
     }
     doLast {
-        println("Finished root project build for '${project.name}'.")
+        println("Finished project build for '${project.name}'.")
     }
 }
 

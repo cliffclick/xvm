@@ -24,8 +24,6 @@ tasks.jar {
         attributes["Implementation-Version"] = version
         attributes["Implementation-Vendor"] = "xtclang.org"
     }
-
-    println(project.layout)
 }
 
 tasks.build {

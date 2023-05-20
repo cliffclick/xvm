@@ -1,4 +1,4 @@
-import gradle.kotlin.dsl.accessors._8a0c834e2c3bd9345c663be0c81ffd6c.javaToolchains
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 /**
  * Conventions common for all projects that use Java, and their tests
@@ -34,13 +34,17 @@ java {
     }
 }
 
-tasks.named<Test>("test") {
+tasks.withType<Test> {
     useJUnit() // TODO: Migrate to useJUnitPlatform(), Jupiter.
     maxHeapSize = "1G"
     println("${javaProjectName()} task: $name.maxHeapSize = $maxHeapSize, uses JUnit.")
+    testLogging {
+        events(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED)
+        showStackTraces = false // change to true to see test output in build log
+    }
 }
 
-tasks.withType<JavaCompile>().configureEach {
+tasks.withType<JavaCompile>() { // .configureEach {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-deprecation")
     println("${javaProjectName()} task: $name.options [encoding: ${options.encoding}, compilerArgs: ${options.compilerArgs}]")

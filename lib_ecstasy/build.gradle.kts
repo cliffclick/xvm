@@ -9,13 +9,14 @@
 
 project.ext.set("implicit.x", "${projectDir}/src/main/resources/implicit.x")
 
+// TODO Not needed? Or flag this as unncessary lifecycle or something?
 tasks.register("build") {
     group       = "Build"
     description = "Build this project"
-    enabled = false
-    // the Ecstasy module project does not build anything itself
+    enabled = false  // the Ecstasy module project does not build anything itself
 }
 
+// TODO Not needed? Or flag this as unncessary lifecycle or something?
 tasks.register("clean") {
     group       = "Build"
     description = "Delete previous build results"
