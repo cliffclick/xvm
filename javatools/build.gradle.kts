@@ -6,6 +6,7 @@ plugins {
     id("org.xvm.java-library-conventions")
 }
 
+/*
 sourceSets {
     main {
         resources {
@@ -17,7 +18,15 @@ sourceSets {
             srcDirs += file("$buildDir/resources/main")
         }
     }
+}*/
+
+dependencies {
+    implementation(project(":javatools_utils"))
 }
+
+// Dependencies that must be sorted
+//    lib_ectasy:property.implicit.x - needs to be copied into our resource dir
+//    all javatools_utils classes
 
 tasks.register<Copy>("copyImplicits") {
     group = "Build"
@@ -46,18 +55,19 @@ tasks.register<Copy>("copyUtils") {
 // TODO We just want to get the lib_xtc implicit.x in our resource folder
 
 tasks.jar {
-    //from(project(":javatools_utils").sourceSets["main"].output.classesDirs)
     //from(project(":lib_ecstasy").sourceSets["main"].resources.srcDirs)
     val copyImplicits = tasks["copyImplicits"]
-    val copyUtils = tasks["copyUtils"]
+    //val copyUtils = tasks["copyUtils"]
+    from(project(":javatools_utils").sourceSets["main"].output)
 
     dependsOn(copyImplicits)
-    dependsOn(copyUtils)
 
     mustRunAfter(copyImplicits)
-    mustRunAfter(copyUtils)
+    //mustRunAfter(copyUtils)
 
-    val version = rootProject.version
+    val version = libs.versions.xvm
+    assert(rootProject.version.equals(version))
+
     manifest {
         attributes["Manifest-Version"] = "1.0"
         attributes["Sealed"] = "true"

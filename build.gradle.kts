@@ -1,7 +1,6 @@
 import java.io.ByteArrayOutputStream
 
 import org.jetbrains.gradle.ext.*
-import org.jetbrains.kotlin.gradle.plugin.sources.android.findKotlinSourceSet
 
 /*
  * Main build file for the XVM project, producing the XDK.
@@ -50,7 +49,9 @@ subprojects {
     tasks.register<DependencyReportTask>("allDeps")
 }
 
-print("Default tasks: " + this.defaultTasks);
+dependencies {
+
+}
 
 val buildTask = tasks.register("build") {
     group = "Build"
