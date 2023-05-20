@@ -44,7 +44,7 @@ val compileAll = tasks.register<JavaExec>("compileAll") {
 
     jvmArgs("-Xms1024m", "-Xmx1024m", "-ea")
 
-    classpath(javatoolsJar)
+    classpath(listOf(javatoolsJar))
 
     val opts = listOf<String>(
         "-verbose",
@@ -83,7 +83,7 @@ val compileOne = tasks.register<JavaExec>("compileOne") {
 
     val name = if (project.hasProperty("testName")) project.property("testName") else "TestSimple"
 
-    classpath(javatoolsJar)
+    classpath(listOf(javatoolsJar))
 
     args("-verbose",
          "-o", "$buildDir",
@@ -126,7 +126,7 @@ tasks.register<JavaExec>("host") {
 
     systemProperties.put("xvm.db.impl", System.getProperty("xvm.db.impl"))
 
-    classpath(javatoolsJar)
+    classpath(listOf(javatoolsJar))
 
     val opts = listOf<String>(
         "-L", "${xdk.buildDir}/xdk/lib/",
