@@ -57,6 +57,10 @@ val xdkVersion      = rootProject.version
 val getDistributionName: () -> String by extra
 val distName = getDistributionName()
 
+// build
+//   depend on launch -assume it's been built
+
+// TODO: This is the default action if we inherit the lifecycle. No need to do this.
 tasks.register("clean") {
     group       = "Build"
     description = "Delete previous build results"
@@ -302,6 +306,17 @@ val compileWebauth = tasks.register<JavaExec>("compileWebauth") {
     mainClass.set("org.xvm.tool.Compiler")
 }
 
+/*
+tasks.register<JavaExec>("xtcBuild") {
+    dependsOn(javatools.tasks["build"])
+    // There would be build tasks, but the dependencies are actualy project
+    // dependencies per subproject.
+    jvmArgs("-Xms1G", "-Xmx1G", "-ea")
+    classpath(javaToolsJar) // TODO: should use gradle way to find jar
+}*/
+
+// Xtc compile task - a number of x files and a number of libs
+
 val compileXenia = tasks.register<JavaExec>("compileXenia") {
     group        = "Execution"
     description  = "Build xenia.xtc module"
@@ -321,6 +336,8 @@ val compileXenia = tasks.register<JavaExec>("compileXenia") {
          "$xeniaMain/x/xenia.x")
     mainClass.set("org.xvm.tool.Compiler")
 }
+
+//
 
 val compileBridge = tasks.register<JavaExec>("compileBridge") {
     group         = "Execution"

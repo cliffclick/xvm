@@ -12,3 +12,7 @@ plugins {
 dependencies {
     implementation(libs.kotlin.gradle.plugin)
 }
+
+fun checkReachable() {
+    println("Test")
+}

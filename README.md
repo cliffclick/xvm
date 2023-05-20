@@ -63,7 +63,7 @@ For **Windows**:
 
 Manual local build for **any computer** (for advanced users):
       
-* Install Java (version 17 or later) and Gradle
+* Install Java (version 17 or later), or let the build do download the correct version.
 
 * Use `git` to obtain the XDK:
 ```
@@ -73,7 +73,7 @@ Manual local build for **any computer** (for advanced users):
 * `cd` into the git repo (the directory will contain [these files](https://github.com/xtclang/xvm/))
   and execute the Gradle build:
 ```
-  gradle build
+  ./gradlew build
 ```
 
 ## Status:

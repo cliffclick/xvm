@@ -1,6 +1,7 @@
 import java.io.ByteArrayOutputStream
 
 import org.jetbrains.gradle.ext.*
+import org.jetbrains.kotlin.gradle.plugin.sources.android.findKotlinSourceSet
 
 /*
  * Main build file for the XVM project, producing the XDK.
@@ -17,6 +18,7 @@ import org.jetbrains.gradle.ext.*
 
 plugins {
     id("org.xvm.project-conventions")
+    `maven-publish`
     alias(libs.plugins.idea.ext)
     alias(libs.plugins.task.tree) // enables the 'gradle <task_1> [task_2 ... task_n] taskTree' task
 }
@@ -26,11 +28,13 @@ val xvmVersion: String by extra
 group = "org.xvm"
 version = xvmVersion
 
-// TODO REMOVE THESE
-if ("true".equals(System.getenv("DEBUG_BUILD"), ignoreCase = true)) {
-    gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS_FULL
-    gradle.startParameter.logLevel = LogLevel.DEBUG
-    println("Warning: DEBUG_BUILD is enabled, and output may be quite verbose.")
+fun adjustVerbosity() {
+    // TODO REMOVE THESE
+    if ("true".equals(System.getenv("DEBUG_BUILD"), ignoreCase = true)) {
+        gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS_FULL
+        gradle.startParameter.logLevel = LogLevel.DEBUG
+        println("Warning: DEBUG_BUILD is enabled, and output may be quite verbose.")
+    }
 }
 
 subprojects {
@@ -45,6 +49,8 @@ subprojects {
     // Enable listing dependencies for all projects, with "./gradlew allDeps"
     tasks.register<DependencyReportTask>("allDeps")
 }
+
+print("Default tasks: " + this.defaultTasks);
 
 val buildTask = tasks.register("build") {
     group = "Build"
@@ -88,6 +94,7 @@ val cleanTask = tasks.register("clean") {
 val gitCleanTask = tasks.register("gitClean") {
     group = "Delete"
     description = "Cleans everything, including the Gradle cache, not under source control."
+
     exec {
         standardOutput = ByteArrayOutputStream()
         workingDir = rootDir
@@ -182,8 +189,8 @@ idea {
                 // which order to do it, and striving to add as little explicit build logic / "code" as possible.
                 // An XTC language would be the best way to get there, both for the pure Gradle build, but also
                 // for any IDE integrations with e.g. debuggers, lexing and breakpoints.
-                delegateBuildRunToGradle = true
-                testRunner = ActionDelegationConfig.TestRunner.GRADLE // "PLATFORM" for IDEA.
+                //delegateBuildRunToGradle = true
+                //testRunner = ActionDelegationConfig.TestRunner.GRADLE // "PLATFORM" for IDEA.
                 println("Delegate build runs to Gradle: $delegateBuildRunToGradle (testRunner: $testRunner)")
             }
 

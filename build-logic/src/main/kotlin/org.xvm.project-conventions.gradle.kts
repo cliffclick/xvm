@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream
 val libs by extra(extensions.getByType<VersionCatalogsExtension>().named("libs"))
 val jdkVersion by extra(resolveJdkVersion())
 val xvmVersion by extra(resolveXvmVersion())
-val defaultJdkVersion = 17
+val defaultJdkVersion = libs.findVersion("minimumJdk")
 
 val findLibrary by extra {
     fun(name : String) : Provider<MinimalExternalModuleDependency> {
@@ -68,3 +68,5 @@ fun resolveVersion(name: String, defaultValue: Any? = null): String {
     }
     return defaultValue.toString()
 }
+
+// Temporary placement of xtc aware build tasks. sourceSets and stuff?

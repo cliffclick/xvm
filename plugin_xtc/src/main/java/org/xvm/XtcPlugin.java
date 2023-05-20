@@ -3,17 +3,23 @@
  */
 package org.xvm;
 
+import org.apache.tools.ant.taskdefs.ExecTask;
 import org.gradle.api.Project;
 import org.gradle.api.Plugin;
+import org.gradle.api.tasks.AbstractExecTask;
 
 /**
  * A simple 'hello world' plugin.
  */
 public class XtcPlugin implements Plugin<Project> {
+    @Override
     public void apply(Project project) {
         // Register a task
-        project.getTasks().register("greeting", task -> {
+        var tasks = project.getTasks();
+        tasks.register("greeting", task -> {
             task.doLast(s -> System.out.println("Hello from plugin 'org.xvm.xtc'"));
+        });
+        tasks.register("compileXtc", task -> {
         });
     }
 }
