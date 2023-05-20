@@ -68,5 +68,3 @@ fun resolveVersion(name: String, defaultValue: Any? = null): String {
     }
     return defaultValue.toString()
 }
-
-// Temporary placement of xtc aware build tasks. sourceSets and stuff?

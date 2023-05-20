@@ -49,10 +49,6 @@ subprojects {
     tasks.register<DependencyReportTask>("allDeps")
 }
 
-dependencies {
-
-}
-
 val buildTask = tasks.register("build") {
     group = "Build"
     description = "Build all projects"
@@ -190,8 +186,8 @@ idea {
                 // which order to do it, and striving to add as little explicit build logic / "code" as possible.
                 // An XTC language would be the best way to get there, both for the pure Gradle build, but also
                 // for any IDE integrations with e.g. debuggers, lexing and breakpoints.
-                //delegateBuildRunToGradle = true
-                //testRunner = ActionDelegationConfig.TestRunner.GRADLE // "PLATFORM" for IDEA.
+                delegateBuildRunToGradle = true
+                testRunner = ActionDelegationConfig.TestRunner.GRADLE // "PLATFORM" for IDEA.
                 println("Delegate build runs to Gradle: $delegateBuildRunToGradle (testRunner: $testRunner)")
             }
 

@@ -46,6 +46,32 @@ tasks.withType<JavaCompile>().configureEach {
     println("${javaProjectName()} task: $name.options [encoding: ${options.encoding}, compilerArgs: ${options.compilerArgs}]")
 }
 
+tasks.register("printSourceSets") {
+    doLast {
+        println("${project.name} source sets:")
+        sourceSets.all {
+            var empty = true
+            println(this)
+
+            println("    sources:")
+            allSource.forEach {
+                println("      source file: ${it.absolutePath}")
+                empty = false
+            }
+            if (empty) println("      empty")
+
+            empty = true
+            println("    outputs:")
+            output.asFileTree.files.forEach {
+                println("      output file: ${it.absolutePath}")
+                empty = false
+            }
+            if (empty) println("      empty")
+        }
+    }
+}
+
 fun javaProjectName() : String {
     return "'${project.name}' (Java project):"
 }
+
